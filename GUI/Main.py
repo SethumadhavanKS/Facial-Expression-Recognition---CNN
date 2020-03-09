@@ -22,7 +22,7 @@ class Ui(QtWidgets.QMainWindow):
     #     # This is executed when the button is pressed
     #     print('Hello World')
     #     # os.system("python --version")
-
+######
 
     def window2(self): 
         print("hello")                                    
