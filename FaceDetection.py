@@ -80,3 +80,4 @@ print("Angry:",count_angry,"\n","Disgust:",count_disgust,"\n","Fear:",count_fear
 "Happy:",count_happy,"\n","Sad:",count_sad,"\n","Surprise:",count_surprise,"\n","Neutral:",count_neutral)
 cap.release()
 cv2.destroyAllWindows
+#
