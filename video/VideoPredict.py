@@ -66,6 +66,6 @@ while True:
 
     if cv2.waitKey(10) == ord('q'):#wait until 'q' key is pressed
         break
-#
+
 cap.release()
 cv2.destroyAllWindows
