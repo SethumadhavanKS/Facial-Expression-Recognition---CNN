@@ -144,7 +144,7 @@ display: block;
 </string>
        </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>Quit</string>
        </property>
       </widget>
      </item>
