@@ -109,7 +109,42 @@ class MainWindow(QtWidgets.QMainWindow):
         self.close_btn_i.clicked.connect(self.img_close)
         self.save_btn_i.clicked.connect(self.save_img)
 
+    #main
+        self.image_frame.hide()
+        self.video_frame.hide()
+        #load model
+        self.model = model_from_json(open("Model/fer.json", "r").read())
+        #load weights
+        self.model.load_weights('Model/fer.h5')
+        self.frame=list()
+        self.i=0
 
+    #Webcam
+
+    def controlTimer(self):
+        self.frame.clear()
+        self.ls=[]
+        # if timer is stopped
+        if not self.timer.isActive():
+            # create video capture
+            self.cap = cv2.VideoCapture(0)
+            # start timer
+            self.timer.start(20)
+            # update control_bt text
+            
+        # if timer is started
+    
+    def timerClose(self):
+          
+            self.timer.stop()
+            # release video capture
+            self.cap.release()
+            self.label.clear()
+            self.expr_lbl.setText("")
+            self.update_graph()
+
+
+#Video
     def closeEvent(self, event):
         """Generate 'question' dialog on clicking 'X' button in title bar.
 
