@@ -2,7 +2,6 @@ from PyQt5 import QtWidgets, uic
 import sys
 import os
 
-
 class Window2(QtWidgets.QMainWindow):                          
     def __init__(self):
         super().__init__()
