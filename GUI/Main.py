@@ -7,6 +7,7 @@ class Window2(QtWidgets.QMainWindow):
         super().__init__()
         self.setWindowTitle("Window22222")
         uic.loadUi('main2.ui', self)
+        
 
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
