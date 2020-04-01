@@ -130,7 +130,7 @@ display: block;
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="quit">
        <property name="styleSheet">
         <string notr="true">background-color: rgb(47, 172, 81);
 border-radius: 5px;
