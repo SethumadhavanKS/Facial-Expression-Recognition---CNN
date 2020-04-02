@@ -120,7 +120,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.i=0
 
     #Webcam
-    
+
+
 
     def controlTimer(self):
         self.frame.clear()
