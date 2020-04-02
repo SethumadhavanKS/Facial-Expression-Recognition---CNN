@@ -132,7 +132,7 @@ class MainWindow(QtWidgets.QMainWindow):
             self.cap = cv2.VideoCapture(0)
             # start timer
             self.timer.start(20)
-            # update control_bt text
+           # update control_bt text
             
         # if timer is started
     
