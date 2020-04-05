@@ -15,7 +15,6 @@
 # plt.xticks(x_pos, x)
 
 # plt.show()
-
 import matplotlib.pyplot as plt
 
 data = [23, 45, 56, 78, 213]
