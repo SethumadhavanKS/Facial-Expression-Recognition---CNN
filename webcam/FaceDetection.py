@@ -8,7 +8,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-
 #load model
 model = model_from_json(open("fer.json", "r").read())
 #load weights
