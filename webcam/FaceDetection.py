@@ -9,18 +9,6 @@ import matplotlib.pyplot as plt
 
 
 #load model
-
-
-model = model_from_json(open("fer.json", "r").read())
-#load weights
-model.load_weights('fer.h5')
-
-ls=["happy","sad","angry","disgust","neutral","surprise","fear"]
-face_haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-
-
-cap=cv2.VideoCapture(0)
-
 while True:
     ret,test_img=cap.read()# captures frame and returns boolean value and captured image
     if not ret:
