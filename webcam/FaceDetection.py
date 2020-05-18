@@ -43,6 +43,16 @@ while True:
 
         predictions = model.predict(img_pixels)
         #find max indexed array
+    for (x,y,w,h) in faces_detected:
+        cv2.rectangle(test_img,(x,y),(x+w,y+h),(255,255,0),thickness=2)
+        roi_gray=gray_img[y:y+w,x:x+h]#cropping region of interest i.e. face area from  image
+        roi_gray=cv2.resize(roi_gray,(48,48))
+        img_pixels = image.img_to_array(roi_gray)
+        img_pixels = np.expand_dims(img_pixels, axis = 0)
+        img_pixels /= 255
+
+        predictions = model.predict(img_pixels)
+        #find max indexed array
         max_index = np.argmax(predictions)
         
 
