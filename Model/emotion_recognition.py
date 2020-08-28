@@ -1,7 +1,7 @@
 import sys, os
 import pandas as pd
 import numpy as np
-
+from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization,AveragePooling2D
@@ -29,7 +29,7 @@ for index, row in df.iterrows():
            train_y.append(row['emotion'])
         elif 'PublicTest' in row['Usage']:
            X_test.append(np.array(val,'float32'))
-           test_y.append(row['emotion'])model.summary()
+           test_y.append(row['emotion'])
 
     except:
         print("error occured at index :{index} and row:{row}")
@@ -38,7 +38,7 @@ for index, row in df.iterrows():
 num_features = 64
 num_labels = 7
 batch_size = 64
-epochs = 30
+epochs = 150
 width, height = 48, 48
 
 
@@ -50,7 +50,7 @@ test_y = np.array(test_y,'float32')
 train_y=np_utils.to_categorical(train_y, num_classes=num_labels)
 test_y=np_utils.to_categorical(test_y, num_classes=num_labels)
 
-#cannot produce
+
 #normalizing data between oand 1
 X_train -= np.mean(X_train, axis=0)
 X_train /= np.std(X_train, axis=0)
@@ -67,31 +67,31 @@ X_test = X_test.reshape(X_test.shape[0], 48, 48, 1)
 #1st convolution layer
 model = Sequential()
 
-model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', input_shape=(X_train.shape[1:])))
-model.add(Conv2D(64,kernel_size= (3, 3), activation='relu'))
+model.add(Conv2D(num_features, kernel_size=(3, 3), activation='relu', input_shape=(X_train.shape[1:])))
+model.add(Conv2D(num_features,kernel_size= (3, 3), activation='relu'))
 # model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2), strides=(2, 2)))
 model.add(Dropout(0.5))
 
 #2nd convolution layer
-model.add(Conv2D(64, (3, 3), activation='relu'))
-model.add(Conv2D(64, (3, 3), activation='relu'))
+model.add(Conv2D(num_features, (3, 3), activation='relu'))
+model.add(Conv2D(num_features, (3, 3), activation='relu'))
 # model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2), strides=(2, 2)))
 model.add(Dropout(0.5))
 
 #3rd convolution layer
-model.add(Conv2D(128, (3, 3), activation='relu'))
-model.add(Conv2D(128, (3, 3), activation='relu'))
+model.add(Conv2D(2*num_features, (3, 3), activation='relu'))
+model.add(Conv2D(2*num_features, (3, 3), activation='relu'))
 # model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2,2), strides=(2, 2)))
 
 model.add(Flatten())
 
 #fully connected neural networks
-model.add(Dense(1024, activation='relu'))
+model.add(Dense(2*2*2*2*num_features, activation='relu'))
 model.add(Dropout(0.2))
-model.add(Dense(1024, activation='relu'))
+model.add(Dense(2*2*2*2*num_features, activation='relu'))
 model.add(Dropout(0.2))
 
 model.add(Dense(num_labels, activation='softmax'))
@@ -104,19 +104,28 @@ model.compile(loss=categorical_crossentropy,
               metrics=['accuracy'])
 
 #Training the model
+# model.fit(X_train, train_y,
+#           batch_size=batch_size,
+#           epochs=epochs,
+#           verbose=1,
+#           validation_data=(X_test, test_y),
+#           shuffle=True)
+
+
+# #Saving the  model to  use it later on
+# fer_json = model.to_json()
+# with open("fer.json", "w") as json_file:
+#     json_file.write(fer_json)
+# model.save_weights("fer.h5")
+# print("Weight Saved")
+patience = 50
+reduce_lr = ReduceLROnPlateau('val_loss', factor=0.1,
+                                  patience=int(patience/4), verbose=1)
+checkpointer = ModelCheckpoint(filepath="weightss.hdf5", verbose=1, save_best_only=True)
 model.fit(X_train, train_y,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=1,
-          validation_data=(X_test, test_y),
-          shuffle=True)
-
-
-#Saving the  model to  use it later on
-fer_json = model.to_json()
-with open("fer.json", "w") as json_file:
-    json_file.write(fer_json)
-model.save_weights("fer.h5")
-##
-#
-
+                    nb_epoch=epochs,
+                    batch_size=batch_size,
+                    verbose=1,
+                    validation_data=(X_test, test_y),
+                    callbacks=[reduce_lr, checkpointer],
+                    shuffle=True)
